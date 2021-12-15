@@ -14,9 +14,6 @@ public class InfoResponse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-
-
     @Embedded
     private ResponseQuery query;
 

@@ -29,4 +29,11 @@ public class MainController {
 
         return new ResponseEntity<>(currentService.getValue(base_currency), HttpStatus.OK);
     }
+
+    @GetMapping(path = "/codes",
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getCurrentCodeValue(@RequestParam(required = false)
+                                                                  String tag){
+        return new ResponseEntity<>(currentService.getCurrencyCode(tag), HttpStatus.OK);
+    }
 }

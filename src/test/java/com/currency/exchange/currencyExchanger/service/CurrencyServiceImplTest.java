@@ -67,7 +67,7 @@ class CurrencyServiceImplTest {
             ).andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof JsonBadRequestException))
-                .andExpect(result -> assertEquals("wrong currency value: " + 
+                .andExpect(result -> assertEquals("wrong currency value: " +
                     result.getRequest().getParameter("base_currency"),
                     Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
