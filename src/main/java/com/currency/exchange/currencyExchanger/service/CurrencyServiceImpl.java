@@ -1,9 +1,9 @@
 package com.currency.exchange.currencyExchanger.service;
 
 import com.currency.exchange.currencyExchanger.entity.InfoResponse;
-import com.currency.exchange.currencyExchanger.entity.RequestFreeCurrencyApi;
-import com.currency.exchange.currencyExchanger.exception.CurrenValueNotFoundException;
-import com.currency.exchange.currencyExchanger.exception.JsonBadRequestException;
+import com.currency.exchange.currencyExchanger.entity.request.RequestFreeCurrencyApi;
+import com.currency.exchange.currencyExchanger.exceptionHendler.CurrenValueNotFoundException;
+import com.currency.exchange.currencyExchanger.exceptionHendler.JsonBadRequestException;
 import com.currency.exchange.currencyExchanger.repository.FreeCurrencyApiRepo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,12 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.logging.Logger;
 
 @Service
 public class CurrencyServiceImpl implements CurrentService {
@@ -29,6 +26,7 @@ public class CurrencyServiceImpl implements CurrentService {
     @Value("${value.key.free_currency_api}")
     private String keyValue;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private Logger logger = Logger.getLogger(CurrentService.class.getName());
 
     @Autowired
     private final FreeCurrencyApiRepo freeCurrencyApiRepo;
@@ -60,6 +58,7 @@ public class CurrencyServiceImpl implements CurrentService {
 
         if (forEntity.getStatusCode().value() == 200) {
             String body = forEntity.getBody();
+            logger.info(forEntity.getBody());
             try {
                 InfoResponse infoResponse = objectMapper.readValue(body, InfoResponse.class);
                 RequestFreeCurrencyApi requestFreeCurrencyApi = new RequestFreeCurrencyApi(infoResponse);
@@ -69,7 +68,11 @@ public class CurrencyServiceImpl implements CurrentService {
                 freeCurrencyApiRepo.save(requestFreeCurrencyApi);
                 return infoResponse;
             } catch (JsonProcessingException e) {
+                logger.info("can't parse json");
                throw new JsonBadRequestException(base_currency);
+            } catch (IOException e) {
+                //зарешать этот момент
+                throw new JsonBadRequestException(base_currency);
             }
         } else {
             throw new CurrenValueNotFoundException(base_currency);
@@ -79,9 +82,11 @@ public class CurrencyServiceImpl implements CurrentService {
     @Override
     public List getCurrencyCode(String tag) {
         InfoResponse value = this.getValue("");
-        return value.getData().entrySet()
-                .stream()
-                .map((Function<Map.Entry<String, Double>, Object>) Map.Entry::getKey)
-                .collect(Collectors.toList());
+        return null;
+
+//                value.getData().entrySet()
+//                .stream()
+//                .map((Function<Map.Entry<String, Double>, Object>) Map.Entry::getKey)
+//                .collect(Collectors.toList());
     }
 }

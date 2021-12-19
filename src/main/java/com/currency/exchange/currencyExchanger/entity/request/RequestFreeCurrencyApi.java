@@ -1,5 +1,6 @@
-package com.currency.exchange.currencyExchanger.entity;
+package com.currency.exchange.currencyExchanger.entity.request;
 
+import com.currency.exchange.currencyExchanger.entity.InfoResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cascade;

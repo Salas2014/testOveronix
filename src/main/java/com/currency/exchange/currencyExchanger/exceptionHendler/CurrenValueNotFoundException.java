@@ -1,4 +1,4 @@
-package com.currency.exchange.currencyExchanger.exception;
+package com.currency.exchange.currencyExchanger.exceptionHendler;
 
 public class CurrenValueNotFoundException extends RuntimeException{
     public CurrenValueNotFoundException(String message) {

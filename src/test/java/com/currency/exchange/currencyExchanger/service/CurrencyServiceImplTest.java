@@ -1,9 +1,6 @@
 package com.currency.exchange.currencyExchanger.service;
 
-import com.currency.exchange.currencyExchanger.exception.CurrenValueNotFoundException;
-import com.currency.exchange.currencyExchanger.exception.CurrentNotFoundAdvice;
-import com.currency.exchange.currencyExchanger.exception.JsonBadRequestException;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.currency.exchange.currencyExchanger.exceptionHendler.JsonBadRequestException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -54,7 +52,7 @@ class CurrencyServiceImplTest {
     }
 
     @Test
-    public void notNullBody() throws JsonProcessingException {
+    public void notNullBody() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(response.getBody());
         JsonNode name = root.path("data");

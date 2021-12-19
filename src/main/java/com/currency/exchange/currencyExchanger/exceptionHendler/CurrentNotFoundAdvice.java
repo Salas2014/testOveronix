@@ -1,4 +1,4 @@
-package com.currency.exchange.currencyExchanger.exception;
+package com.currency.exchange.currencyExchanger.exceptionHendler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
