@@ -1,49 +1,33 @@
-package com.currency.exchange.currencyExchanger.entity;
+package com.currency.exchange.currencyExchanger.dto.freecurrencyapi;
 
-import javax.persistence.Embeddable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
+public class QueryResponse {
 
-@Embeddable
-public class ResponseQuery {
     private String apikey;
     private Timestamp timestamp;
     private String base_currency;
-    private Date date_from;
-    private Date date_to;
+    private String date_from;
+    private String date_to;
 
-    public Date getDate_from() {
-        return date_from;
-    }
-
-    public void setDate_from(Date date_from) {
-        this.date_from = date_from;
-    }
-
-    public Date getDate_to() {
-        return date_to;
-    }
-
-    public void setDate_to(Date date_to) {
-        this.date_to = date_to;
-    }
-
-    public ResponseQuery() {
-    }
-
-    public ResponseQuery(String apikey, Timestamp timestamp, String base_currency) {
+    public QueryResponse(String apikey, Timestamp timestamp, String base_currency) {
         this.apikey = apikey;
         this.timestamp = timestamp;
         this.base_currency = base_currency;
     }
 
-    public ResponseQuery(String apikey, Timestamp timestamp, String base_currency, Date date_from, Date date_to) {
+    public QueryResponse(String apikey, Timestamp timestamp, String base_currency, String date_from, String date_to) {
         this.apikey = apikey;
         this.timestamp = timestamp;
         this.base_currency = base_currency;
         this.date_from = date_from;
         this.date_to = date_to;
+    }
+
+    public QueryResponse() {
     }
 
     public String getApikey() {
@@ -68,5 +52,21 @@ public class ResponseQuery {
 
     public void setBase_currency(String base_currency) {
         this.base_currency = base_currency;
+    }
+
+    public String getDate_from() {
+        return date_from;
+    }
+
+    public void setDate_from(String date_from) {
+        this.date_from = date_from;
+    }
+
+    public String getDate_to() {
+        return date_to;
+    }
+
+    public void setDate_to(String date_to) {
+        this.date_to = date_to;
     }
 }

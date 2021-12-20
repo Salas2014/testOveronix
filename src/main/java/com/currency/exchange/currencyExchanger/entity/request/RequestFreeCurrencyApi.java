@@ -1,13 +1,12 @@
 package com.currency.exchange.currencyExchanger.entity.request;
 
-import com.currency.exchange.currencyExchanger.entity.InfoResponse;
+import com.currency.exchange.currencyExchanger.dto.exchangerateapi.JsonBlockExchangeRateApi;
+import com.currency.exchange.currencyExchanger.entity.exchangerateapi.JsonBlockExchangeRateApiEntity;
+import com.currency.exchange.currencyExchanger.entity.freecurrencyapi.HistoryJsonEntity;
+import com.currency.exchange.currencyExchanger.entity.freecurrencyapi.JsonBlockEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Map;
 
 @Entity
 @Table(name = "request")
@@ -19,18 +18,31 @@ public class RequestFreeCurrencyApi {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JsonIgnore
-    private InfoResponse infoResponse;
+    private HistoryJsonEntity historyJsonEntity;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private JsonBlockEntity jsonBlockEntity;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private JsonBlockExchangeRateApiEntity jsonBlockExchangeRateApi;
 
     public RequestFreeCurrencyApi() {
     }
 
-    public RequestFreeCurrencyApi(InfoResponse infoResponse) {
-        this.infoResponse = infoResponse;
+    public RequestFreeCurrencyApi(String tag, HistoryJsonEntity infoResponse, JsonBlockEntity jsonBlockEntity) {
+        this.tag = tag;
+        this.historyJsonEntity = infoResponse;
+        this.jsonBlockEntity = jsonBlockEntity;
     }
 
-    public RequestFreeCurrencyApi(String tag, InfoResponse infoResponse) {
+    public RequestFreeCurrencyApi(String tag, JsonBlockEntity jsonBlockEntity) {
         this.tag = tag;
-        this.infoResponse = infoResponse;
+        this.jsonBlockEntity = jsonBlockEntity;
+    }
+
+    public RequestFreeCurrencyApi(String tag, HistoryJsonEntity infoResponse) {
+        this.tag = tag;
+        this.historyJsonEntity = infoResponse;
     }
 
     public Long getId() {
@@ -41,19 +53,35 @@ public class RequestFreeCurrencyApi {
         this.id = id;
     }
 
-    public InfoResponse getInfoResponse() {
-        return infoResponse;
-    }
-
-    public void setInfoResponse(InfoResponse infoResponse) {
-        this.infoResponse = infoResponse;
-    }
-
     public String getTag() {
         return tag;
     }
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public HistoryJsonEntity getHistoryJsonEntity() {
+        return historyJsonEntity;
+    }
+
+    public void setHistoryJsonEntity(HistoryJsonEntity historyJsonEntity) {
+        this.historyJsonEntity = historyJsonEntity;
+    }
+
+    public JsonBlockEntity getJsonBlockEntity() {
+        return jsonBlockEntity;
+    }
+
+    public void setJsonBlockEntity(JsonBlockEntity jsonBlockEntity) {
+        this.jsonBlockEntity = jsonBlockEntity;
+    }
+
+    public JsonBlockExchangeRateApiEntity getJsonBlockExchangeRateApi() {
+        return jsonBlockExchangeRateApi;
+    }
+
+    public void setJsonBlockExchangeRateApi(JsonBlockExchangeRateApiEntity jsonBlockExchangeRateApi) {
+        this.jsonBlockExchangeRateApi = jsonBlockExchangeRateApi;
     }
 }
