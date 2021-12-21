@@ -31,7 +31,7 @@ public class MainController {
 
     @GetMapping(path = "/history",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<HistoryJsonBlock> testMethod(@RequestParam(required = false) String baseCurrency,
+    public ResponseEntity<HistoryJsonBlock> getDurationDate(@RequestParam(required = false) String baseCurrency,
                                                        String dateFrom, String dateTo) {
         return new ResponseEntity<>(
                 currentService.getHistoryExchange(baseCurrency, dateFrom, dateTo), HttpStatus.OK);

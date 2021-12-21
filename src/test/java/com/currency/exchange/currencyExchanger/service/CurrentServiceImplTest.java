@@ -5,6 +5,7 @@ import com.currency.exchange.currencyExchanger.exceptionHendler.JsonNotFoundExce
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,5 +95,32 @@ class CurrentServiceImplTest {
                                 "can not parse you params",
                         Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
+
+    @Test
+    @Disabled
+    // my 3d api is not live andI can't know the code for sure
+    public void selectBestRateHappyPass() throws Exception{
+        this.mockMvc.perform(get("/api/v1/currency" +"/bestRate"
+                +"?baseCode=USD&targetCode=EUR"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getHistoryExchangeNullableDate() throws Exception{
+        this.mockMvc.perform(get("/api/v1/currency/history?"  ))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof JsonBadRequestException));
+    }
+
+    @Test
+    public void getHistoryExchangeBadDate() throws Exception{
+        this.mockMvc.perform(get("/api/v1/currency/history?" + "dateFrom=&" + "dateTo=" ))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof JsonBadRequestException));
+    }
+
 
 }

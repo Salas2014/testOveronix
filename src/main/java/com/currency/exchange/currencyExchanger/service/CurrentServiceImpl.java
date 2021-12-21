@@ -58,7 +58,7 @@ public class CurrentServiceImpl implements CurrentService {
     @Override
     public JsonBlock getValue(String base_currency) {
         StringBuilder urlBuild = new StringBuilder();
-        if (base_currency != null) {
+        if (base_currency != null && !base_currency.isEmpty()) {
             // check base_currency and build request
             urlBuild.append(baseUrl)
                     .append("base_currency=").append(base_currency)
@@ -68,7 +68,14 @@ public class CurrentServiceImpl implements CurrentService {
             urlBuild.append(baseUrl).append(keyValue);
         }
 
-        ResponseEntity<String> serverResponse = restTemplate.getForEntity(urlBuild.toString(), String.class);
+        ResponseEntity<String> serverResponse;
+
+        try {
+            serverResponse = restTemplate.getForEntity(urlBuild.toString(), String.class);
+        } catch (RestClientException e){
+            throw new JsonNotFoundException(base_currency);
+        }
+
         if(serverResponse.getStatusCode().value() == 200) {
             try {
                 JsonBlock jsonBlock = objectMapper.readValue(serverResponse.getBody(), JsonBlock.class);
@@ -113,8 +120,14 @@ public class CurrentServiceImpl implements CurrentService {
             throw new JsonBadRequestException("format for you date yyyy-mm-dd");
         }
 
+        ResponseEntity<String> serverResponse;
+        try {
+            serverResponse = restTemplate.getForEntity(stringBuilder.toString(), String.class);
+        }catch (RestClientException e){
+            throw new JsonNotFoundException(baseCurrency);
+        }
 
-        ResponseEntity<String> serverResponse = restTemplate.getForEntity(stringBuilder.toString(), String.class);
+
         if(serverResponse.getStatusCode().value() == 200){
             try {
                 HistoryJsonBlock historyJsonBlock = objectMapper.readValue(serverResponse.getBody(), HistoryJsonBlock.class);
