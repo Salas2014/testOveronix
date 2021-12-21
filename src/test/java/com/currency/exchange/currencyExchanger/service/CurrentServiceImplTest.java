@@ -29,45 +29,45 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class CurrentServiceImplTest {
-    ResponseEntity<String> response;
-    @Autowired
-    private MockMvc mockMvc;
-    @Value("${value.url.free_currency_api}")
-    private String baseUrl;
-    @Value("${value.key.free_currency_api}")
-    private String keyValue;
-    @BeforeEach
-    void setUp() {
-        RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl
-                = baseUrl + keyValue;
-
-        response  = restTemplate.getForEntity(fooResourceUrl , String.class);
-    }
-
-    @Test
-    public void getForEntity() throws Exception{
-
-        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
-    }
-
-    @Test
-    public void notNullBody() throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode root = mapper.readTree(response.getBody());
-        JsonNode name = root.path("data");
-        assertThat(name.asText(), notNullValue());
-    }
-
-    @Test
-    public void ifCurrentValueWrong() throws Exception{
-        this.mockMvc.perform(get("/api/v1/currency" + "?base_currency=Pop")
-            ).andDo(print())
-                .andExpect(status().isBadRequest())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof JsonBadRequestException))
-                .andExpect(result -> assertEquals("wrong currency value: " +
-                    result.getRequest().getParameter("base_currency"),
-                    Objects.requireNonNull(result.getResolvedException()).getMessage()));
-    }
+//    ResponseEntity<String> response;
+//    @Autowired
+//    private MockMvc mockMvc;
+//    @Value("${value.url.free_currency_api}")
+//    private String baseUrl;
+//    @Value("${value.key.free_currency_api}")
+//    private String keyValue;
+//    @BeforeEach
+//    void setUp() {
+//        RestTemplate restTemplate = new RestTemplate();
+//        String fooResourceUrl
+//                = baseUrl + keyValue;
+//
+//        response  = restTemplate.getForEntity(fooResourceUrl , String.class);
+//    }
+//
+//    @Test
+//    public void getForEntity() throws Exception{
+//
+//        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+//    }
+//
+//    @Test
+//    public void notNullBody() throws IOException {
+//        ObjectMapper mapper = new ObjectMapper();
+//        JsonNode root = mapper.readTree(response.getBody());
+//        JsonNode name = root.path("data");
+//        assertThat(name.asText(), notNullValue());
+//    }
+//
+////    @Test
+////    public void ifCurrentValueWrong() throws Exception{
+////        this.mockMvc.perform(get("/api/v1/currency" + "?base_currency=Pop")
+////            ).andDo(print())
+////                .andExpect(status().isBadRequest())
+////                .andExpect(result -> assertTrue(result.getResolvedException() instanceof JsonBadRequestException))
+////                .andExpect(result -> assertEquals("wrong currency value: " +
+////                    result.getRequest().getParameter("base_currency"),
+////                    Objects.requireNonNull(result.getResolvedException()).getMessage()));
+////    }
 
 }

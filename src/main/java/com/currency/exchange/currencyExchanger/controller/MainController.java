@@ -40,15 +40,16 @@ public class MainController {
     }
 
     @GetMapping(path = "/bestRate")
-    public Double getBestRate(@RequestParam String baseCode,
+    public ResponseEntity<Double> getBestRate(@RequestParam String baseCode,
                               @RequestParam String targetCode){
-       return currentService.selectBEstRate(baseCode,targetCode);
+       return new ResponseEntity<>(currentService.selectBEstRate(baseCode,targetCode), HttpStatus.OK);
     }
 
     @GetMapping(path = "/codes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<String> getAllCodes(){
-        return currentService.getCurrencyCode();
+    public ResponseEntity<List<String>> getAllCodes(){
+        return new ResponseEntity<>(currentService.getCurrencyCode(), HttpStatus.OK);
     }
+
 }
 
 

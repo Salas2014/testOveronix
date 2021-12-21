@@ -9,4 +9,5 @@ public interface CurrentService {
     JsonBlock getValue(String base_currency);
     List<String> getCurrencyCode();
     HistoryJsonBlock getHistoryExchange(String dateFrom, String dateTo, String baseCurrency);
+
 }

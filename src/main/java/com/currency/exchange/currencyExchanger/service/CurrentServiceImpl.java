@@ -8,6 +8,7 @@ import com.currency.exchange.currencyExchanger.entity.freecurrencyapi.HistoryJso
 import com.currency.exchange.currencyExchanger.entity.freecurrencyapi.JsonBlockEntity;
 import com.currency.exchange.currencyExchanger.entity.request.RequestFreeCurrencyApi;
 import com.currency.exchange.currencyExchanger.exceptionHendler.JsonBadRequestException;
+import com.currency.exchange.currencyExchanger.repository.HistoryJsonEntityRepo;
 import com.currency.exchange.currencyExchanger.repository.JsonBlockRepo;
 import com.currency.exchange.currencyExchanger.repository.RequestFreeCurrencyApiRepo;
 import com.currency.exchange.currencyExchanger.util.DateValidator;
@@ -44,6 +45,8 @@ public class CurrentServiceImpl implements CurrentService {
     private RequestFreeCurrencyApiRepo requestFreeCurrencyApiRepo;
     @Autowired
     private JsonBlockRepo jsonBlockRepo;
+    @Autowired
+    private HistoryJsonEntityRepo historyJsonEntityRepo;
     private DateValidator validator = new DateValidatorUsingDateFormat("yyyy-MM-dd");
 
     public CurrentServiceImpl(RestTemplateBuilder restTemplateBuilder){
@@ -130,6 +133,8 @@ public class CurrentServiceImpl implements CurrentService {
             throw new JsonBadRequestException("existing currency code format for instance: USD");
     }
 
+
+
     public Double selectBEstRate(String baseCode, String targetCode){
 
         ResponseEntity<String> exchange = restTemplate.getForEntity(urlExchangeRateApi
@@ -160,13 +165,18 @@ public class CurrentServiceImpl implements CurrentService {
 
     }
 
+
+
+
+
+
     private Double findValue(Map<String, Double> data, String targetValue){
        return data.entrySet()
                 .stream()
                 .filter((o) -> o.getKey().equals(targetValue))
                 .map(Map.Entry::getValue)
                 .findFirst()
-                .orElseThrow(() ->  new JsonBadRequestException(targetValue + " has exc"));
+                .orElseThrow(() ->  new JsonBadRequestException(targetValue + " has Exception"));
     }
 
 
