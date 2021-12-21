@@ -8,6 +8,7 @@ import com.currency.exchange.currencyExchanger.entity.freecurrencyapi.HistoryJso
 import com.currency.exchange.currencyExchanger.entity.freecurrencyapi.JsonBlockEntity;
 import com.currency.exchange.currencyExchanger.entity.request.RequestFreeCurrencyApi;
 import com.currency.exchange.currencyExchanger.exceptionHendler.JsonBadRequestException;
+import com.currency.exchange.currencyExchanger.exceptionHendler.JsonNotFoundException;
 import com.currency.exchange.currencyExchanger.repository.HistoryJsonEntityRepo;
 import com.currency.exchange.currencyExchanger.repository.JsonBlockRepo;
 import com.currency.exchange.currencyExchanger.repository.RequestFreeCurrencyApiRepo;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -135,13 +137,19 @@ public class CurrentServiceImpl implements CurrentService {
 
 
 
-    public Double selectBEstRate(String baseCode, String targetCode){
+    public Double selectBEstRate(String baseCode, String targetCode) {
 
-        ResponseEntity<String> exchange = restTemplate.getForEntity(urlExchangeRateApi
-                + keyExchangeRateApi + baseCode, String.class);
+        ResponseEntity<String> exchange;
+        ResponseEntity<String> free;
+        try {
+            exchange = restTemplate.getForEntity(urlExchangeRateApi
+                    + keyExchangeRateApi + baseCode, String.class);
 
-        ResponseEntity<String> free = restTemplate.getForEntity(baseUrl + keyValue
-                + "&base_currency=" +baseCode, String.class);
+            free = restTemplate.getForEntity(baseUrl + keyValue
+                    + "&base_currency=" +baseCode, String.class);
+        } catch (RestClientException e){
+            throw new JsonNotFoundException(baseCode);
+        }
 
         if(exchange.getStatusCode().value() == 200 && free.getStatusCode().value() == 200){
             try {
@@ -159,15 +167,12 @@ public class CurrentServiceImpl implements CurrentService {
             } catch (JsonProcessingException exception) {
                 throw new JsonBadRequestException("can not parse you params");
             }
-        } else {
+        }
+        else {
             throw new JsonBadRequestException("existing currency code format for instance: USD");
         }
 
     }
-
-
-
-
 
 
     private Double findValue(Map<String, Double> data, String targetValue){

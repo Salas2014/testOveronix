@@ -20,4 +20,10 @@ public class CurrentNotFoundAdvice {
     String jsonBadRequestException(JsonBadRequestException exception){
         return exception.getMessage();
     }
+    @ResponseBody
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String jsonNotFoundException(JsonNotFoundException exception){
+        return exception.getMessage();
+    }
 }

@@ -25,7 +25,6 @@ public class MainController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JsonBlock> getDate(@RequestParam(required = false) String baseCurrency){
-
         return new ResponseEntity<>(
                 currentService.getValue(baseCurrency), HttpStatus.OK);
     }
@@ -34,7 +33,6 @@ public class MainController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HistoryJsonBlock> testMethod(@RequestParam(required = false) String baseCurrency,
                                                        String dateFrom, String dateTo) {
-
         return new ResponseEntity<>(
                 currentService.getHistoryExchange(baseCurrency, dateFrom, dateTo), HttpStatus.OK);
     }
